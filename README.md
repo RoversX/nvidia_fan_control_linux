@@ -19,7 +19,7 @@ pip3 install pynvml
 ```
 Get python file
 ```bash
-wget https://raw.githubusercontent.com/RoversX/nvndia_fan_control_linux/main/nvidia_fan_control.py
+wget https://raw.githubusercontent.com/RoversX/nvidia_fan_control_linux/main/nvidia_fan_control.py
 ```
 Create fan.sh for simple use
 ```bash
