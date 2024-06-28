@@ -40,6 +40,9 @@ Start fan control
 ```bash
 ./fan.sh
 ```
+### Requirements
+
+NVIDIA's driver 🤗
 
 ## Version 1
 
