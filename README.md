@@ -77,6 +77,26 @@ Step_Down_Temperature: 37
 
 ```
 
+### If you want to draw fan speed curve
+```py
+import matplotlib.pyplot as plt
+
+# Fan Curve Parameters
+temperature_points = [0, 40, 57, 70]
+fan_speed_points = [30, 40, 80, 100]
+
+# Draw curve
+plt.figure(figsize=(8, 6))
+plt.plot(temperature_points, fan_speed_points, marker='o', linestyle='-', color='b', markersize=8)
+plt.title('Fan Speed Curve')
+plt.xlabel('Temperature (°C)')
+plt.ylabel('Fan Speed (%)')
+plt.grid(True)
+plt.xticks(temperature_points)
+plt.yticks(fan_speed_points)
+plt.tight_layout()
+plt.show()
+```
 
 ### Improved based on: 
 https://github.com/Cippo95/nvidia-fan-control
