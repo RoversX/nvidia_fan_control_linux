@@ -11,7 +11,7 @@ python3 -m venv fan
 ```
 Activate Environment
 ```bash
-source bin/activate
+source fan/bin/activate
 ```
 Install pynvml
 ```bash
