@@ -21,6 +21,10 @@ Get python file
 ```bash
 wget https://raw.githubusercontent.com/RoversX/nvidia_fan_control_linux/main/nvidia_fan_control.py
 ```
+Return to the previous directory maybe
+```bash
+cd ``
+```
 Create fan.sh for simple use
 ```bash
 nano fan.sh
