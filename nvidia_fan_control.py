@@ -83,15 +83,15 @@ try:
             if temperature < step_down_temperature or temperature > previous_temperature:
                 # calculate the point of the fan curve (temperature and fan speed arrays)
                 point = 0
-                # change num_total_curve_point to num_total_curve_point - 1 to prevent IndexError
-                while point < num_total_curve_point - 1 and temperature >= temperature_points[point]:
+                while point < num_total_curve_point - 1 and temperature >= temperature_points[point + 1]:
                     point += 1
 
-                previous_point = max(0, point - 1)
+                previous_point = max(0, point)
+                next_point = min(num_total_curve_point - 1, point + 1)
 
                 # logic for the fan speed incremental variation (instead of a stepped fan curve)
-                temperature_delta = temperature_points[point] - temperature_points[previous_point]
-                fan_speed_delta = fan_speed_points[point] - fan_speed_points[previous_point]
+                temperature_delta = temperature_points[next_point] - temperature_points[previous_point]
+                fan_speed_delta = fan_speed_points[next_point] - fan_speed_points[previous_point]
                 temperature_increment = temperature - temperature_points[previous_point]
                 fan_speed_increment = fan_speed_delta * temperature_increment / temperature_delta if temperature_delta != 0 else 0
                 previous_temperature = temperature
@@ -106,6 +106,7 @@ Temperature: {temperature}°C
 Total Curve Point: {num_total_curve_point}
 Current Curve Point: {point}
 Previous_Curve_Point: {previous_point}
+Next_Curve_Point: {next_point}
 Fan_Speed: {fan_speed}%
 ============================================================
 Temperature_Delta: {temperature_delta}
