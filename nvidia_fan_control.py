@@ -83,7 +83,7 @@ try:
             if temperature < step_down_temperature or temperature > previous_temperature:
                 # calculate the point of the fan curve (temperature and fan speed arrays)
                 point = 0
-                # 这是唯一的修改：将 num_total_curve_point 改为 num_total_curve_point - 1
+                # change num_total_curve_point to num_total_curve_point - 1 to prevent IndexError
                 while point < num_total_curve_point - 1 and temperature >= temperature_points[point]:
                     point += 1
 
