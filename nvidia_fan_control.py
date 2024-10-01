@@ -6,7 +6,9 @@ import os
 temperature_points = [0, 40, 57, 70]
 fan_speed_points = [27, 40, 80, 100]
 
-# GPU(s) to apply fan curve to (use [] for all GPUs)
+# GPU(s) to apply fan curve to
+# 0 is the first GPU, 2 the second, etc.
+# Use [] for all GPUs
 gpus = []
 
 # Sleep interval to reduce CPU activity
