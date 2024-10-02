@@ -6,6 +6,11 @@ import os
 temperature_points = [0, 40, 57, 70]
 fan_speed_points = [27, 40, 80, 100]
 
+# GPU(s) to apply fan curve to
+# 0 is the first GPU, 2 the second, etc.
+# Use [] for all GPUs
+gpus = []
+
 # Sleep interval to reduce CPU activity
 sleep_seconds = 5
 
@@ -29,10 +34,13 @@ for i in range(device_count):
     handle = nvmlDeviceGetHandleByIndex(i)
     fan_count = nvmlDeviceGetNumFans(handle)
     name = nvmlDeviceGetName(handle)
-    handles.append(handle)
-    fan_counts.append(fan_count)
-    print(f"GPU {i}: {name}")
-    print(f"Fan Count: {fan_count}")
+    if not gpus or i in gpus:
+        handles.append(handle)
+        fan_counts.append(fan_count)
+        print(f"GPU {i}: {name}")
+        print(f"Fan Count: {fan_count}")
+    else:
+        print(f"Skipping GPU {i}: {name}")
 
 # Initialize starting temperatures and fan speed
 step_down_temperature = 0
