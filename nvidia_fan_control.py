@@ -6,6 +6,15 @@ import os
 temperature_points = [0, 40, 57, 70]
 fan_speed_points = [27, 40, 80, 100]
 
+# GPU selection for fan curve application
+# Specify which GPUs to control by their indices
+# Examples:
+#   gpus = []     : Control all detected GPUs (default)
+#   gpus = [0]    : Control only the first GPU
+#   gpus = [0, 1] : Control the first and second GPUs
+# Note: GPU indices start at 0, so 0 is the first GPU, 1 is the second, etc.
+gpus = []
+
 # Sleep interval to reduce CPU activity
 sleep_seconds = 5
 
@@ -18,6 +27,20 @@ nvmlInit()
 # Get device count
 device_count = nvmlDeviceGetCount()
 
+# Check for valid GPUs
+#if not gpus:
+#    gpus = list(range(device_count))
+#else:
+#    gpus = [gpu for gpu in gpus if gpu < device_count]
+
+#if not gpus:
+#    print("Error: No valid GPU found. Please check your gpus settings.（＾ｖ＾）")
+#    print(f"Your system has {device_count} GPUs, and indexes range from 0 to {device_count - 1}.")
+#    print(f"To control all GPUs, set gpus = [].")
+#    print(f"To control multiple GPUs, set gpus to a list of indices like [0, 1] for the first two GPUs, up to [{device_count - 1}].")
+#    nvmlShutdown()
+#    exit(1)
+
 # Print out Nvidia Driver Version and Device Count
 print("============================================================")
 print(f"Driver Version: {nvmlSystemGetDriverVersion()}")
@@ -29,10 +52,13 @@ for i in range(device_count):
     handle = nvmlDeviceGetHandleByIndex(i)
     fan_count = nvmlDeviceGetNumFans(handle)
     name = nvmlDeviceGetName(handle)
-    handles.append(handle)
-    fan_counts.append(fan_count)
-    print(f"GPU {i}: {name}")
-    print(f"Fan Count: {fan_count}")
+    if not gpus or i in gpus:
+        handles.append(handle)
+        fan_counts.append(fan_count)
+        print(f"GPU {i}: {name}")
+        print(f"Fan Count: {fan_count}")
+    else:
+        print(f"Skipping GPU {i}: {name}")
 
 # Initialize starting temperatures and fan speed
 step_down_temperature = 0
