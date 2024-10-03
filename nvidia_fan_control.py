@@ -22,7 +22,7 @@ gpus = []
 # it can introduce performance overhead due to index checking.
 # GPU index verification is disabled by default, set to 'True' to enable GPU number verification
 GPU_VALIDATION_SETTINGS = {
-    'ENABLE': True,  # Whether to enable GPU index validation
+    'ENABLE': False,  # Whether to enable GPU index validation
     'SHOW_INVALID_INDICES': True  # Only show invalid GPU indices when ENABLE is True
 }
 
