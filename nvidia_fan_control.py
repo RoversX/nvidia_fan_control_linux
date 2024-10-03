@@ -15,13 +15,16 @@ fan_speed_points = [27, 40, 80, 100]
 # Note: GPU indices start at 0, so 0 is the first GPU, 1 is the second, etc.
 gpus = []
 
-# Enable or disable GPU Number validation
-# ENABLE_GPU_NUMBER_VALIDATION controls whether GPU index validation is performed.
+# Enable or disable GPU Validation
+# GPU_VALIDATION_SETTINGS controls whether GPU index validation is performed.
 # When True, the program checks if the provided GPU indices are within the valid range.
 # This can be useful for small systems, but in large GPU clusters (hundreds or thousands of GPUs),
 # it can introduce performance overhead due to index checking.
 # GPU index verification is disabled by default, set to 'True' to enable GPU number verification
-ENABLE_GPU_NUMBER_VALIDATION = False
+GPU_VALIDATION_SETTINGS = {
+    'ENABLE': True,  # Whether to enable GPU index validation
+    'SHOW_INVALID_INDICES': True  # Only show invalid GPU indices when ENABLE is True
+}
 
 # Sleep interval to reduce CPU activity
 sleep_seconds = 5
@@ -36,18 +39,30 @@ nvmlInit()
 device_count = nvmlDeviceGetCount()
 
 # Check for valid GPUs based on the validation flag
-if ENABLE_GPU_NUMBER_VALIDATION:
+if GPU_VALIDATION_SETTINGS['ENABLE']:
     if not gpus:
         gpus = list(range(device_count))
     else:
-        # Verify that the GPU index specified by the user is valid
-        gpus = [gpu for gpu in gpus if gpu < device_count]
+        # First use any() to quickly check if there are invalid GPU indices
+        if any(gpu >= device_count or gpu < 0 for gpu in gpus):
+            # Only when you need to display invalid indexes, find and record specific invalid indexes
+            if GPU_VALIDATION_SETTINGS['SHOW_INVALID_INDICES']: 
+                invalid_gpus = [gpu for gpu in gpus if gpu >= device_count or gpu < 0]
+                print(f"ERROR: Invalid GPU index found:{invalid_gpus}")
+                print(f"Your system has {device_count} GPUs, and indexes range from 0 to {device_count - 1}.")
+                print(f"Please check your gpus settings and correct the invalid index.（＾ｖ＾）")
+            # If you don't need to display specific invalid indexes, print general error messages directly    
+            else:
+                print("ERROR: Invalid GPU index found")
+                print(f"Your system has {device_count} GPUs, and indexes range from 0 to {device_count - 1}.")
+                print(f"If you want to display specific invalid indexes, set 'SHOW_INVALID_INDICES' to 'True' ")
+                print(f"Please check your gpus settings and correct the invalid index.（＾ｖ＾）")
+            nvmlShutdown()
+            exit(1)
     # If there is no valid GPU, prompt an error and exit
     if not gpus:
         print("Error: No valid GPU found. Please check your gpus settings.（＾ｖ＾）")
         print(f"Your system has {device_count} GPUs, and indexes range from 0 to {device_count - 1}.")
-        print(f"To control all GPUs, set gpus = [].")
-        print(f"To control multiple GPUs, set gpus to a list of indices like [0, 1] for the first two GPUs, up to [{device_count - 1}].")
         nvmlShutdown()
         exit(1)
 
