@@ -1,4 +1,4 @@
-# Script to control nvidia GPU fan speed in Linux.
+# A simple script to control nvidia GPU fan speed in Linux.
 (No GUI Required,just need SSH)(Perhaps the simplest)
 
 #### Fan curve points Graph
