@@ -13,9 +13,9 @@ Activate Environment
 ```bash
 source fan/bin/activate
 ```
-Install pynvml
+Install nvidia-ml-py
 ```bash
-pip3 install pynvml
+pip3 install nvidia-ml-py
 ```
 Get python file
 ```bash
